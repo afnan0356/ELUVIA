@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ELUVIA</title>
+    <script>
+      var seg = window.location.pathname.replace('/eluvia', '').replace(/^\//, '')
+      var query = window.location.search
+      var hash = window.location.hash
+      var redirectPath = seg ? '/' + seg : '/'
+      sessionStorage.setItem('spa_redirect', redirectPath + query + hash)
+      window.location.replace('/eluvia/')
+    </script>
+  </head>
+  <body></body>
+</html>
