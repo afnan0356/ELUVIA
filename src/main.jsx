@@ -13,7 +13,7 @@ if (redirect) {
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter basename="/eluvia">
+    <BrowserRouter basename="/ELUVIA">
       <App />
     </BrowserRouter>
   </React.StrictMode>
