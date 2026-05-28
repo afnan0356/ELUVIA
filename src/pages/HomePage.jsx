@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ColorCard from '../components/ui/ColorCard'
 import SearchBar from '../components/SearchBar'
+import ColorMixer from '../components/tools/ColorMixer'
+import RandomColor from '../components/tools/RandomColor'
 import { colors } from '../data/colors'
 import { filterByMood } from '../utils/colorUtils'
 
@@ -59,10 +61,7 @@ export default function HomePage() {
             <h2 style={{ fontSize: '22px', fontWeight: '600', color: 'var(--text-primary)' }}>Trending Colors</h2>
             <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Curated picks this week</span>
           </div>
-          <span
-            onClick={() => navigate('/search')}
-            style={{ fontSize: '13px', color: 'var(--accent)', cursor: 'pointer' }}
-          >
+          <span onClick={() => navigate('/search')} style={{ fontSize: '13px', color: 'var(--accent)', cursor: 'pointer' }}>
             View all →
           </span>
         </div>
@@ -115,56 +114,33 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Color Mixer placeholder */}
+      {/* Tools: Color Mixer + Random Color */}
       <section style={{ maxWidth: '1200px', margin: '0 auto', padding: '64px 24px' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '32px' }}>
-          <h2 style={{ fontSize: '22px', fontWeight: '600', color: 'var(--text-primary)' }}>Color Mixer</h2>
-          <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Blend two colors together</span>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '40px' }}>
+          <h2 style={{ fontSize: '22px', fontWeight: '600', color: 'var(--text-primary)' }}>Color Tools</h2>
+          <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Mix, generate, and explore</span>
         </div>
-        <div style={{
-          background: 'var(--bg-card)',
-          border: '1px solid var(--border)',
-          borderRadius: 'var(--radius-xl)',
-          padding: '48px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '180px',
-        }}>
-          <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Color mixer — coming in next phase</span>
-        </div>
-      </section>
 
-      {/* Random Color */}
-      <section style={{
-        borderTop: '1px solid var(--border-subtle)',
-        background: 'var(--bg-secondary)',
-        padding: '64px 24px',
-      }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '24px' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <h2 style={{ fontSize: '22px', fontWeight: '600', color: 'var(--text-primary)' }}>Random Color</h2>
-            <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Discover something unexpected</span>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px', alignItems: 'start' }}>
+
+          {/* Color Mixer */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+              <span style={{ fontSize: '15px', fontWeight: '600', color: 'var(--text-primary)' }}>Color Mixer</span>
+              <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Blend two colors together</span>
+            </div>
+            <ColorMixer />
           </div>
-          <button
-            onClick={() => {
-              const random = colors[Math.floor(Math.random() * colors.length)]
-              navigate(`/color/${random.id}`)
-            }}
-            style={{
-              background: 'var(--bg-elevated)',
-              border: '1px solid var(--border)',
-              borderRadius: 'var(--radius-md)',
-              padding: '12px 24px',
-              fontSize: '13px',
-              fontWeight: '500',
-              color: 'var(--text-primary)',
-              cursor: 'pointer',
-              letterSpacing: '0.02em',
-            }}
-          >
-            Generate Color
-          </button>
+
+          {/* Random Color */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+              <span style={{ fontSize: '15px', fontWeight: '600', color: 'var(--text-primary)' }}>Random Color</span>
+              <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Discover something unexpected</span>
+            </div>
+            <RandomColor />
+          </div>
+
         </div>
       </section>
 
