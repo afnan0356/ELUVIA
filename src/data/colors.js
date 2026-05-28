@@ -195,7 +195,7 @@ export const colors = [
     rgb: { r: 44, g: 62, b: 80 },
     hsl: { h: 210, s: 29, l: 24 },
     tags: ['dark', 'corporate', 'modern', 'deep'],
-    description: 'The quiet authority of a designer\'s notebook cover.',
+    description: "The quiet authority of a designer's notebook cover.",
   },
   {
     id: 'rose-gold-mist',
@@ -213,7 +213,7 @@ export const colors = [
     rgb: { r: 15, g: 52, b: 96 },
     hsl: { h: 214, s: 73, l: 22 },
     tags: ['luxury', 'dark', 'deep', 'corporate'],
-    description: 'Midnight blue of a jeweller\'s case. Dense and precious.',
+    description: "Midnight blue of a jeweller's case. Dense and precious.",
   },
   {
     id: 'moss-stone',
@@ -258,7 +258,7 @@ export const colors = [
     rgb: { r: 172, g: 225, b: 175 },
     hsl: { h: 123, s: 43, l: 78 },
     tags: ['soft', 'calm', 'natural', 'pastel'],
-    description: 'Ancient glaze from a jade potter\'s kiln. Subtle and timeless.',
+    description: "Ancient glaze from a jade potter's kiln. Subtle and timeless.",
   },
   {
     id: 'tar-black',
@@ -357,7 +357,7 @@ export const colors = [
     rgb: { r: 255, g: 69, b: 0 },
     hsl: { h: 16, s: 100, l: 50 },
     tags: ['bold', 'neon', 'energetic', 'creative'],
-    description: 'A tongue of plasma off the sun\'s surface. Violent and beautiful.',
+    description: "A tongue of plasma off the sun's surface. Violent and beautiful.",
   },
   {
     id: 'oyster-shell',
@@ -438,6 +438,6 @@ export const colors = [
     rgb: { r: 0, g: 71, b: 171 },
     hsl: { h: 215, s: 100, l: 34 },
     tags: ['bold', 'deep', 'corporate', 'modern'],
-    description: 'Pure cobalt pigment from a painter\'s most trusted source.',
+    description: "Pure cobalt pigment from a painter's most trusted source.",
   },
 ]
