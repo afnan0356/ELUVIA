@@ -1,19 +1,24 @@
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import ColorCard from '../components/ui/ColorCard'
+import SearchBar from '../components/SearchBar'
+import { colors } from '../data/colors'
+import { filterByMood } from '../utils/colorUtils'
 
-const PLACEHOLDER_COLORS = [
-  { name: 'Obsidian Veil', hex: '#1a1a2e', tag: 'dark' },
-  { name: 'Dune Gold', hex: '#c9a96e', tag: 'luxury' },
-  { name: 'Arctic Mist', hex: '#d4e5f7', tag: 'calm' },
-  { name: 'Ember Glow', hex: '#e8613a', tag: 'creative' },
-  { name: 'Sage Whisper', hex: '#8fad88', tag: 'soft' },
-  { name: 'Void Blue', hex: '#0d1b2a', tag: 'dark' },
-  { name: 'Chalk Rose', hex: '#e8c5c0', tag: 'soft' },
-  { name: 'Chrome Slate', hex: '#5c6b7a', tag: 'corporate' },
-]
-
-const MOODS = ['Luxury', 'Calm', 'Dark', 'Neon', 'Soft', 'Modern', 'Corporate', 'Creative']
+const MOODS = ['all', 'luxury', 'calm', 'dark', 'neon', 'soft', 'modern', 'corporate', 'creative']
+const TRENDING_IDS = ['dune-gold', 'obsidian-veil', 'arctic-mist', 'ember-glow', 'plasma-violet', 'midnight-wine', 'copper-patina', 'electric-cyan']
 
 export default function HomePage() {
+  const [activeMood, setActiveMood] = useState('all')
+  const navigate = useNavigate()
+
+  const trendingColors = TRENDING_IDS.map(id => colors.find(c => c.id === id)).filter(Boolean)
+  const moodColors = filterByMood(activeMood, colors).slice(0, 8)
+
+  function handleSearch(query) {
+    navigate(`/search?q=${encodeURIComponent(query)}`)
+  }
+
   return (
     <div>
 
@@ -29,7 +34,7 @@ export default function HomePage() {
         background: 'radial-gradient(ellipse at 50% 0%, rgba(201,169,110,0.06) 0%, transparent 70%)',
         borderBottom: '1px solid var(--border-subtle)',
       }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '640px', width: '100%' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '600px', width: '100%' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             <span style={{ fontSize: '11px', fontWeight: '600', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--accent)' }}>
               Color Discovery
@@ -37,39 +42,12 @@ export default function HomePage() {
             <h1 style={{ fontSize: 'clamp(36px, 6vw, 64px)', fontWeight: '700', color: 'var(--text-primary)', lineHeight: '1.1', letterSpacing: '-0.02em' }}>
               Find Your Color.
             </h1>
-            <p style={{ fontSize: '16px', color: 'var(--text-secondary)', lineHeight: '1.7', maxWidth: '480px', margin: '0 auto' }}>
+            <p style={{ fontSize: '16px', color: 'var(--text-secondary)', lineHeight: '1.7', maxWidth: '440px', margin: '0 auto' }}>
               Discover, explore, and understand colors through a premium, intelligent experience.
             </p>
           </div>
-
-          {/* Search placeholder */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px',
-            background: 'var(--bg-card)',
-            border: '1px solid var(--border)',
-            borderRadius: 'var(--radius-lg)',
-            padding: '14px 20px',
-            marginTop: '8px',
-            cursor: 'text',
-          }}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-            </svg>
-            <span style={{ fontSize: '15px', color: 'var(--text-muted)', flex: 1, textAlign: 'left' }}>
-              Search by name, HEX, mood...
-            </span>
-            <span style={{
-              fontSize: '11px',
-              color: 'var(--text-muted)',
-              background: 'var(--bg-elevated)',
-              border: '1px solid var(--border)',
-              borderRadius: '4px',
-              padding: '2px 8px',
-            }}>
-              ↵
-            </span>
+          <div style={{ marginTop: '8px' }}>
+            <SearchBar placeholder="Search by name, HEX, mood..." onSearch={handleSearch} />
           </div>
         </div>
       </section>
@@ -81,15 +59,16 @@ export default function HomePage() {
             <h2 style={{ fontSize: '22px', fontWeight: '600', color: 'var(--text-primary)' }}>Trending Colors</h2>
             <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Curated picks this week</span>
           </div>
-          <span style={{ fontSize: '13px', color: 'var(--accent)', cursor: 'pointer' }}>View all →</span>
+          <span
+            onClick={() => navigate('/search')}
+            style={{ fontSize: '13px', color: 'var(--accent)', cursor: 'pointer' }}
+          >
+            View all →
+          </span>
         </div>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-          gap: '16px',
-        }}>
-          {PLACEHOLDER_COLORS.map((c) => (
-            <ColorCard key={c.hex} name={c.name} hex={c.hex} tag={c.tag} />
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '16px' }}>
+          {trendingColors.map(c => (
+            <ColorCard key={c.id} id={c.id} name={c.name} hex={c.hex} tag={c.tags[0]} />
           ))}
         </div>
       </section>
@@ -106,21 +85,31 @@ export default function HomePage() {
             <h2 style={{ fontSize: '22px', fontWeight: '600', color: 'var(--text-primary)' }}>Explore by Mood</h2>
             <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Find colors that match your feeling</span>
           </div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-            {MOODS.map((mood) => (
-              <div key={mood} style={{
-                padding: '10px 20px',
-                background: 'var(--bg-card)',
-                border: '1px solid var(--border)',
-                borderRadius: 'var(--radius-xl)',
-                fontSize: '13px',
-                fontWeight: '500',
-                color: 'var(--text-secondary)',
-                cursor: 'pointer',
-                transition: 'border-color 0.2s, color 0.2s',
-              }}>
-                {mood}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginBottom: '40px' }}>
+            {MOODS.map(mood => (
+              <div
+                key={mood}
+                onClick={() => setActiveMood(mood)}
+                style={{
+                  padding: '10px 20px',
+                  background: activeMood === mood ? 'var(--bg-elevated)' : 'var(--bg-card)',
+                  border: `1px solid ${activeMood === mood ? 'var(--border)' : 'var(--border-subtle)'}`,
+                  borderRadius: 'var(--radius-xl)',
+                  fontSize: '13px',
+                  fontWeight: activeMood === mood ? '600' : '400',
+                  color: activeMood === mood ? 'var(--text-primary)' : 'var(--text-secondary)',
+                  cursor: 'pointer',
+                  textTransform: 'capitalize',
+                  transition: 'all 0.15s',
+                }}
+              >
+                {mood === 'all' ? 'All Moods' : mood}
               </div>
+            ))}
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '16px' }}>
+            {moodColors.map(c => (
+              <ColorCard key={c.id} id={c.id} name={c.name} hex={c.hex} tag={c.tags[0]} />
             ))}
           </div>
         </div>
@@ -142,11 +131,11 @@ export default function HomePage() {
           justifyContent: 'center',
           minHeight: '180px',
         }}>
-          <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Color mixer coming soon</span>
+          <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Color mixer — coming in next phase</span>
         </div>
       </section>
 
-      {/* Random Color placeholder */}
+      {/* Random Color */}
       <section style={{
         borderTop: '1px solid var(--border-subtle)',
         background: 'var(--bg-secondary)',
@@ -157,17 +146,23 @@ export default function HomePage() {
             <h2 style={{ fontSize: '22px', fontWeight: '600', color: 'var(--text-primary)' }}>Random Color</h2>
             <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Discover something unexpected</span>
           </div>
-          <button style={{
-            background: 'var(--bg-elevated)',
-            border: '1px solid var(--border)',
-            borderRadius: 'var(--radius-md)',
-            padding: '12px 24px',
-            fontSize: '13px',
-            fontWeight: '500',
-            color: 'var(--text-primary)',
-            cursor: 'pointer',
-            letterSpacing: '0.02em',
-          }}>
+          <button
+            onClick={() => {
+              const random = colors[Math.floor(Math.random() * colors.length)]
+              navigate(`/color/${random.id}`)
+            }}
+            style={{
+              background: 'var(--bg-elevated)',
+              border: '1px solid var(--border)',
+              borderRadius: 'var(--radius-md)',
+              padding: '12px 24px',
+              fontSize: '13px',
+              fontWeight: '500',
+              color: 'var(--text-primary)',
+              cursor: 'pointer',
+              letterSpacing: '0.02em',
+            }}
+          >
             Generate Color
           </button>
         </div>
