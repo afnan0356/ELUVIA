@@ -1,22 +1,26 @@
 import { Routes, Route } from 'react-router-dom'
-import Navbar from './components/layout/Navbar'
-import Footer from './components/layout/Footer'
+import Layout from './components/layout/Layout'
 import HomePage from './pages/HomePage'
 import SearchPage from './pages/SearchPage'
 import ColorDetailPage from './pages/ColorDetailPage'
+import AboutPage from './pages/AboutPage'
+import ContactPage from './pages/ContactPage'
+import TermsPage from './pages/TermsPage'
+import NotFoundPage from './pages/NotFoundPage'
 
 export default function App() {
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--bg-primary)' }}>
-      <Navbar />
-      <main style={{ flex: 1 }}>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/search" element={<SearchPage />} />
-          <Route path="/color/:name" element={<ColorDetailPage />} />
-        </Routes>
-      </main>
-      <Footer />
-    </div>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<HomePage />} />
+        <Route path="search" element={<SearchPage />} />
+        <Route path="color/:name" element={<ColorDetailPage />} />
+        <Route path="about" element={<AboutPage />} />
+        <Route path="contact" element={<ContactPage />} />
+        <Route path="terms" element={<TermsPage />} />
+        <Route path="privacy" element={<TermsPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Route>
+    </Routes>
   )
 }
