@@ -1,66 +1,112 @@
 import { Link } from 'react-router-dom'
 
+const LINKS = {
+  Platform: [
+    { to: '/', label: 'Home' },
+    { to: '/search', label: 'Explore Colors' },
+    { to: '/search?q=trending', label: 'Trending' },
+  ],
+  Company: [
+    { to: '/about', label: 'About' },
+    { to: '/contact', label: 'Contact' },
+  ],
+  Legal: [
+    { to: '/terms', label: 'Terms of Use' },
+    { to: '/privacy', label: 'Privacy Policy' },
+  ],
+}
+
 export default function Footer() {
   return (
     <footer style={{
       borderTop: '1px solid var(--border-subtle)',
       background: 'var(--bg-secondary)',
-      padding: '48px 24px 32px',
+      paddingTop: 'var(--space-16)',
+      paddingBottom: 'var(--space-8)',
       marginTop: 'auto',
     }}>
       <div style={{
         maxWidth: '1200px',
         margin: '0 auto',
+        padding: '0 var(--space-6)',
         display: 'flex',
         flexDirection: 'column',
-        gap: '32px',
+        gap: 'var(--space-12)',
       }}>
 
-        {/* Top row */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '24px' }}>
+        {/* Top grid */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'auto repeat(3, 1fr)',
+          gap: 'var(--space-8)',
+          flexWrap: 'wrap',
+        }}>
 
           {/* Brand */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <span style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-primary)', letterSpacing: '0.08em' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)', paddingRight: 'var(--space-10)' }}>
+            <span style={{
+              fontSize: '17px',
+              fontWeight: '700',
+              color: 'var(--text-primary)',
+              letterSpacing: '0.1em',
+            }}>
               ELUVIA
             </span>
-            <span style={{ fontSize: '13px', color: 'var(--text-muted)', maxWidth: '240px', lineHeight: '1.6' }}>
-              Premium color discovery platform.
-            </span>
+            <p style={{
+              fontSize: '13px',
+              color: 'var(--text-muted)',
+              lineHeight: '1.7',
+              maxWidth: '200px',
+            }}>
+              Premium color discovery.<br />Free, forever.
+            </p>
           </div>
 
-          {/* Links */}
-          <div style={{ display: 'flex', gap: '40px', flexWrap: 'wrap' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <span style={{ fontSize: '11px', fontWeight: '600', color: 'var(--text-muted)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Platform</span>
-              <Link to="/search" style={{ fontSize: '13px', color: 'var(--text-secondary)', textDecoration: 'none' }}>Explore</Link>
-              <Link to="/" style={{ fontSize: '13px', color: 'var(--text-secondary)', textDecoration: 'none' }}>Trending</Link>
+          {/* Link columns */}
+          {Object.entries(LINKS).map(([group, items]) => (
+            <div key={group} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
+              <span style={{
+                fontSize: '10px',
+                fontWeight: '600',
+                color: 'var(--text-muted)',
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+                marginBottom: 'var(--space-1)',
+              }}>
+                {group}
+              </span>
+              {items.map(item => (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  style={{
+                    fontSize: '13px',
+                    color: 'var(--text-secondary)',
+                    transition: 'color var(--transition-fast)',
+                    width: 'fit-content',
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.color = 'var(--text-primary)'}
+                  onMouseLeave={e => e.currentTarget.style.color = 'var(--text-secondary)'}
+                >
+                  {item.label}
+                </Link>
+              ))}
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <span style={{ fontSize: '11px', fontWeight: '600', color: 'var(--text-muted)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Company</span>
-              <Link to="/about" style={{ fontSize: '13px', color: 'var(--text-secondary)', textDecoration: 'none' }}>About</Link>
-              <Link to="/contact" style={{ fontSize: '13px', color: 'var(--text-secondary)', textDecoration: 'none' }}>Contact</Link>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <span style={{ fontSize: '11px', fontWeight: '600', color: 'var(--text-muted)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Legal</span>
-              <Link to="/terms" style={{ fontSize: '13px', color: 'var(--text-secondary)', textDecoration: 'none' }}>Terms</Link>
-              <Link to="/privacy" style={{ fontSize: '13px', color: 'var(--text-secondary)', textDecoration: 'none' }}>Privacy</Link>
-            </div>
-          </div>
+          ))}
         </div>
 
-        {/* Bottom row */}
+        {/* Bottom bar */}
         <div style={{
           borderTop: '1px solid var(--border-subtle)',
-          paddingTop: '20px',
+          paddingTop: 'var(--space-6)',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
           flexWrap: 'wrap',
-          gap: '12px',
+          gap: 'var(--space-3)',
         }}>
           <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
-            © 2025 ELUVIA. Free forever.
+            © {new Date().getFullYear()} ELUVIA. All rights reserved.
           </span>
           <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
             Built with assistance from Claude &amp; ChatGPT
@@ -68,6 +114,18 @@ export default function Footer() {
         </div>
 
       </div>
+
+      <style>{`
+        @media (max-width: 640px) {
+          footer > div > div:first-child {
+            grid-template-columns: 1fr 1fr !important;
+          }
+          footer > div > div:first-child > div:first-child {
+            grid-column: 1 / -1;
+            padding-right: 0 !important;
+          }
+        }
+      `}</style>
     </footer>
   )
 }
